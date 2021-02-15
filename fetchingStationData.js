@@ -5,11 +5,11 @@ export const fetchingStationData = async () => {
         try{
             const res = await fetch(ENDPOINT);
             const data = await res.json();
-            function dispatchLogin(res){
+            function dispatchLogin(data){
                 dispatch({
                     type: "SET_DESTINATION",
                     payload: {
-                        destination: res.destination
+                        destination: data.destination
                     }
                 })
             }

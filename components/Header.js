@@ -1,54 +1,53 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { Link, Route, Switch } from "react-router-dom";
 
 import styled from "styled-components";
-import Destination from './Destination';
+import Destination from "../pages/home";
+import MyAccount from "../pages/myAccount";
 
-const HeaderStyle = styled.div `
-    font-size: 18px;
-    line-height: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0F0E17;
+const HeaderStyle = styled.div`
+  font-size: 18px;
+  line-height: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0f0e17;
+  padding-block-start: 28px;
+  padding-block-end: 29px;
+  margin-inline-end: -20px;
+  margin-inline-start: -20px;
 
-    h1 {
-        font-size: 24px;
-        font-weight: 100;
-        color: #ffffff;
-    }
+  h1 {
+    font-size: 24px;
+    font-weight: 100;
+    color: #ffffff;
+  }
 
-    a {
-        text-decoration: none;
-        color: #A7A9BE; 
-    }
+  a {
+    text-decoration: none;
+    color: #a7a9be;
+  }
 `;
 
-function Header({ title }) {
-    return (
-        <div>
-            <HeaderStyle>
-                <Link to="/">
-                    {title}
-                </Link>
-                <Link to="/acount">
-                    My account
-                </Link>
-            </HeaderStyle>
-            <div>
-                <Switch>
-                    <Route path="/acount">
-                        My acount
-                    </Route>
-                    <Route exact path="/">
-                        <Destination />
-                    </Route>
-                </Switch>
-            </div>
-        </div>
-    )
+export default function Header() {
+  return (
+    <div>
+      <HeaderStyle>
+        <Link to="/">Mahanoro Station</Link>
+        <Link to="/account">My account</Link>
+      </HeaderStyle>
+      <div>
+        <Switch>
+          <Route exact path="/">
+            <Destination />
+          </Route>
+          <Route path="/account">
+            <MyAccount />
+          </Route>
+        </Switch>
+      </div>
+    </div>
+  );
 }
 
-export default connect((state) => ({title: state.title}))(Header)

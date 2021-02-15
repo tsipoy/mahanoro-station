@@ -38158,7 +38158,85 @@ exports.ServerStyleSheet = Ue;
 "production" !== "development" && "undefined" != typeof navigator && "ReactNative" === navigator.product && console.warn("It looks like you've imported 'styled-components' on React Native.\nPerhaps you're looking to import 'styled-components/native'?\nRead more about this at https://www.styled-components.com/docs/basics#react-native"), "production" !== "development" && "test" !== "development" && (window["__styled-components-init__"] = window["__styled-components-init__"] || 0, 1 === window["__styled-components-init__"] && console.warn("It looks like there are several instances of 'styled-components' initialized in this application. This may cause dynamic styles to not render properly, errors during the rehydration process, a missing theme prop, and makes your application bigger without good reason.\n\nSee https://s-c.sh/2BAXzed for more info."), window["__styled-components-init__"] += 1);
 var _default = qe;
 exports.default = _default;
-},{"react-is":"node_modules/react-is/index.js","react":"node_modules/react/index.js","shallowequal":"node_modules/shallowequal/index.js","@emotion/stylis":"node_modules/@emotion/stylis/dist/stylis.browser.esm.js","@emotion/unitless":"node_modules/@emotion/unitless/dist/unitless.browser.esm.js","@emotion/is-prop-valid":"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","hoist-non-react-statics":"node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js","process":"../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"components/Destination.js":[function(require,module,exports) {
+},{"react-is":"node_modules/react-is/index.js","react":"node_modules/react/index.js","shallowequal":"node_modules/shallowequal/index.js","@emotion/stylis":"node_modules/@emotion/stylis/dist/stylis.browser.esm.js","@emotion/unitless":"node_modules/@emotion/unitless/dist/unitless.browser.esm.js","@emotion/is-prop-valid":"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js","hoist-non-react-statics":"node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js","process":"../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"actions/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.destination = destination;
+exports.account = account;
+
+// import fetchingStationData from "../fetchingStationData";
+// console.log(fetchingStationData);
+// export function destination() {
+//     return {
+//         type: "SET_DESTINATION",
+//         payload: fetchingStationData,
+//     }
+// }
+// const ENDPOINT =
+//   "https://gist.githubusercontent.com/Pinois/36bb5fbf9b6a686f0baf4006dd137bca/raw/a40d8b3f696a75f388db286d57bdd05a925fa0e7/trips.json";
+// export const destination = () => {
+//   return async (dispatch) => {
+//     try {
+//       const res = await fetch(ENDPOINT);
+//       const data = await res.json();
+//       let station = data.destination;
+//       const stations = [];
+//       station.map((station) => {
+//         stations.push(station.destination);
+//       });
+//       dispatch({
+//         type: "SET_DESTINATION",
+//         destination: stations,
+//       });
+//       return dispatchLogin(await data);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+// };
+function destination() {
+  return {
+    type: "HEADER_TITLE",
+    payload: {
+      destination
+    }
+  };
+} // export function title(title) {
+//     return {
+//         type: "HEADER_TITLE",
+//         payload: title,
+//     }
+// }
+// export function firstname(firstname) {
+//     return {
+//         type: "FIRST_NAME",
+//         payload: firstname,
+//     }
+// }
+// export function lastname(lastname) {
+//     return {
+//         type: "LAST_NAME",
+//         payload: lastname,
+//     }
+// }
+// export function phoneNumber(number) {
+//     return {
+//         type: "PHONE_NUMBER",
+//         payload: number,
+//     }
+// }
+
+
+function account(account) {
+  return {
+    type: "SET_ACCOUNT",
+    payload: account
+  };
+}
+},{}],"components/Destination.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38169,6 +38247,8 @@ exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
 
 var _reactRedux = require("react-redux");
+
+var _index = require("../actions/index");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38176,76 +38256,197 @@ function Destination({
   destination
 }) {
   console.log(destination);
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Moramaga"));
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h2", null, "Where are you going?"), /*#__PURE__*/_react.default.createElement("p", null, destination.destination));
 }
 
-var _default = (0, _reactRedux.connect)(state => ({
-  station: state.destination
-}), null)(Destination);
+function mapStateToProps(state) {
+  return {
+    station: state.destination
+  };
+}
+
+const mapDispatchToProps = {
+  destination: _index.destination
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Destination);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js"}],"components/Header.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../actions/index":"actions/index.js"}],"pages/home.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = home;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _reactRedux = require("react-redux");
+var _Destination = _interopRequireDefault(require("../components/Destination"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function home() {
+  return /*#__PURE__*/_react.default.createElement(_Destination.default, null);
+}
+},{"react":"node_modules/react/index.js","../components/Destination":"components/Destination.js"}],"components/MyAccount.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = MyAccount;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import { connect } from 'react-redux'
+const Account = _styledComponents.default.section`
+  color: #0f0e17;
+
+  .accountHeader {
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  p {
+    font-size: 24px;
+    line-height: 28px;
+    color: #e53170;
+    margin-block-start: -16px;
+  }
+
+  .formTitle {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #0f0e17;
+    padding-block-end: 32px;
+    padding-block-start: 16px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    padding-block-end: 45px;
+  }
+
+  input {
+    font-size: 16px;
+    background-color: #000000;
+    color: #ff8906;
+    padding-inline-start: 22px;
+    padding-block-start: 28px;
+    padding-block-end: 28px;
+    margin-block-start: 16px;
+  }
+
+  button {
+    background-color: #e53170;
+    padding-inline-start: 32px;
+    padding-inline-end: 31px;
+    padding-block-start: 23px;
+    padding-block-end: 24px;
+    font-size: 16px;
+    color: #ffffff;
+    border: none;
+  }
+`;
+
+function MyAccount() {
+  return /*#__PURE__*/_react.default.createElement(Account, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "accountHeader"
+  }, /*#__PURE__*/_react.default.createElement("h2", null, "My acount"), /*#__PURE__*/_react.default.createElement("p", null, "Volana Sariaka")), /*#__PURE__*/_react.default.createElement("form", null, /*#__PURE__*/_react.default.createElement("label", {
+    className: "formTitle"
+  }, "My personnal informations:"), /*#__PURE__*/_react.default.createElement("label", null, "Firstname", /*#__PURE__*/_react.default.createElement("input", {
+    value: "Volana"
+  })), /*#__PURE__*/_react.default.createElement("label", null, "Lastname", /*#__PURE__*/_react.default.createElement("input", {
+    value: "Sariaka"
+  })), /*#__PURE__*/_react.default.createElement("label", null, "Phone number", /*#__PURE__*/_react.default.createElement("input", {
+    value: "674385709468"
+  })), /*#__PURE__*/_react.default.createElement("button", null, "Update")));
+} // export default connect((state) => ({account: state.account}))(MyAccount)
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"pages/myAccount.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = myAccount;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _MyAccount = _interopRequireDefault(require("../components/MyAccount"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function myAccount() {
+  return /*#__PURE__*/_react.default.createElement(_MyAccount.default, null);
+}
+},{"react":"node_modules/react/index.js","../components/MyAccount":"components/MyAccount.js"}],"components/Header.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Header;
+
+var _react = _interopRequireDefault(require("react"));
 
 var _reactRouterDom = require("react-router-dom");
 
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
-var _Destination = _interopRequireDefault(require("./Destination"));
+var _home = _interopRequireDefault(require("../pages/home"));
+
+var _myAccount = _interopRequireDefault(require("../pages/myAccount"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const HeaderStyle = _styledComponents.default.div`
-    font-size: 18px;
-    line-height: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0F0E17;
+  font-size: 18px;
+  line-height: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0f0e17;
+  padding-block-start: 28px;
+  padding-block-end: 29px;
+  margin-inline-end: -20px;
+  margin-inline-start: -20px;
 
-    h1 {
-        font-size: 24px;
-        font-weight: 100;
-        color: #ffffff;
-    }
+  h1 {
+    font-size: 24px;
+    font-weight: 100;
+    color: #ffffff;
+  }
 
-    a {
-        text-decoration: none;
-        color: #A7A9BE; 
-    }
+  a {
+    text-decoration: none;
+    color: #a7a9be;
+  }
 `;
 
-function Header({
-  title
-}) {
+function Header() {
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(HeaderStyle, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/"
-  }, title), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
-    to: "/acount"
+  }, "Mahanoro Station"), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: "/account"
   }, "My account")), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Switch, null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
-    path: "/acount"
-  }, "My acount"), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     exact: true,
     path: "/"
-  }, /*#__PURE__*/_react.default.createElement(_Destination.default, null)))));
+  }, /*#__PURE__*/_react.default.createElement(_home.default, null)), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    path: "/account"
+  }, /*#__PURE__*/_react.default.createElement(_myAccount.default, null)))));
 }
-
-var _default = (0, _reactRedux.connect)(state => ({
-  title: state.title
-}))(Header);
-
-exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./Destination":"components/Destination.js"}],"App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../pages/home":"pages/home.js","../pages/myAccount":"pages/myAccount.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38262,6 +38463,10 @@ var _Header = _interopRequireDefault(require("./components/Header"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const Content = _styledComponents.default.div`
+    padding-inline-end: 20px;
+    padding-inline-start: 20px;
+    padding-block-end: 20px;
+    padding-block-start: 20px;
 `;
 
 function App() {
@@ -38301,36 +38506,59 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.title = title;
 exports.destination = destination;
-exports.firstname = firstname;
+exports.account = account;
 exports.default = void 0;
 
 var _redux = require("redux");
 
-function title(state = "", action) {
-  switch (action.type) {
-    case "HEADER_TITLE":
-      return action.payload;
+// export function title(state = "", action) {
+//   switch (action.type) {
+//     case "HEADER_TITLE":
+//       return action.payload;
+//     default:
+//       return state;
+//   }
+// }
+// export function title(state = "", action) {
+//   switch (action.type) {
+//     case "HEADER_TITLE":
+//       return action.payload;
+//     default:
+//       return state;
+//   }
+// }
+const initialState = {
+  destination: []
+};
 
-    default:
-      return state;
-  }
-}
-
-function destination(state = [], action) {
+function destination(state = initialState, action) {
   switch (action.type) {
     case "SET_DESTINATION":
-      return [...state, action.payload];
+      return { ...state,
+        destination: action.payload
+      };
 
     default:
       return state;
   }
-}
+} // export function myAccount(state = "", action) {
+//   switch (action.type) {
+//     case "FIRST_NAME":
+//       return action.payload;
+//     case "LAST_NAME":
+//       return action.payload;
+//     case "PHONE_NUMBER":
+//       return action.payload;
+//     default:
+//       return state;
+//   }
+// }
 
-function firstname(state = "", action) {
+
+function account(state = "", action) {
   switch (action.type) {
-    case "HEADER_TITLE":
+    case "SET_ACCOUNT":
       return action.payload;
 
     default:
@@ -38339,7 +38567,8 @@ function firstname(state = "", action) {
 }
 
 var _default = (0, _redux.combineReducers)({
-  title,
+  // title,
+  account,
   destination
 });
 
@@ -38353,10 +38582,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = {
   destination: [],
-  title: "Mahanoro Station",
-  firstname: "Volana",
-  lastname: "Sariaka",
-  phoneNumber: "034 34 034 34"
+  account: "" // title: "",
+  // firstname: "",
+  // lastname: "",
+  // phoneNumber: ""
+
 };
 exports.default = _default;
 },{}],"store.js":[function(require,module,exports) {
@@ -38377,8 +38607,8 @@ var _state = _interopRequireDefault(require("./state"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const middlewares = [_reduxThunk.default];
-const store = (0, _redux.createStore)(_reducers.default, _state.default, (0, _redux.applyMiddleware)(...middlewares));
+// const middlewares = [thunk]
+const store = (0, _redux.createStore)(_reducers.default, _state.default, (0, _redux.applyMiddleware)(_reduxThunk.default));
 var _default = store;
 exports.default = _default;
 },{"redux":"node_modules/redux/es/redux.js","redux-thunk":"node_modules/redux-thunk/es/index.js","./reducers":"reducers/index.js","./state":"state.js"}],"index.js":[function(require,module,exports) {
@@ -38429,7 +38659,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59827" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58399" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

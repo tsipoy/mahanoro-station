@@ -1,13 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux';
+import { connect} from 'react-redux';
+
+import { destination } from "../actions/index"
+
 
 function Destination({ destination }) {
     console.log(destination)
+
     return (
         <div>
-            <p>Moramaga</p>
+            <h2>Where are you going?</h2>
+            <p>{destination.destination}</p>
         </div>
     )
 }
 
-export default connect((state) => ({station: state.destination}), null)(Destination);
+function mapStateToProps(state) {
+    return {
+        station: state.destination,
+    }
+}
+
+const mapDispatchToProps = {
+    destination,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Destination);
