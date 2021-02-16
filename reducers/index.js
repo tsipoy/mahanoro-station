@@ -17,43 +17,52 @@ import { combineReducers } from "redux";
 //   }
 // }
 
-const initialState = {
-  destination: []
-}
+// const initialState = {
+//   destination: []
+// }
 
-export function destination(state = initialState, action) {
+export function destination(state = [], action) {
   switch (action.type) {
     case "SET_DESTINATION":
-    return {...state, destination: action.payload};
+      return [...state, action.payload];
     default:
       return state;
   }
 }
 
-// export function myAccount(state = "", action) {
-//   switch (action.type) {
-//     case "FIRST_NAME":
-//       return action.payload;
-//     case "LAST_NAME":
-//       return action.payload;
-//     case "PHONE_NUMBER":
-//       return action.payload;
-//     default:
-//       return state;
-//   }
-// }
+export function setDestinationDetail(state = "", action) {
+  switch (action.type) {
+    case "SET_DESTINATION_DETAIL":
+      return action.payload;
+    default:
+      return state;
+  }
+}
 
-export function account(state="", action) {
+export function myAccount(state = "", action) {
+  switch (action.type) {
+    case "SET_FIRSTNAME":
+      return action.payload;
+    case "SET_LASTNAME":
+      return action.payload;
+    case "SET_PHONE_NUMBER":
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export function account(state = "", action) {
   switch (action.type) {
     case "SET_ACCOUNT":
-      return action.payload
+      return action.payload;
     default:
-      return state
+      return state;
   }
 }
 
 export default combineReducers({
   // title,
   account,
-  destination
+  destination,
 });

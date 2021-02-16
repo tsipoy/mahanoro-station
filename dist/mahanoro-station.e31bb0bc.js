@@ -38165,75 +38165,45 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.destination = destination;
-exports.account = account;
+exports.firstname = firstname;
+exports.lastname = lastname;
+exports.phoneNumber = phoneNumber;
+exports.setDestinationdetails = setDestinationdetails;
 
-// import fetchingStationData from "../fetchingStationData";
-// console.log(fetchingStationData);
-// export function destination() {
-//     return {
-//         type: "SET_DESTINATION",
-//         payload: fetchingStationData,
-//     }
-// }
-// const ENDPOINT =
-//   "https://gist.githubusercontent.com/Pinois/36bb5fbf9b6a686f0baf4006dd137bca/raw/a40d8b3f696a75f388db286d57bdd05a925fa0e7/trips.json";
-// export const destination = () => {
-//   return async (dispatch) => {
-//     try {
-//       const res = await fetch(ENDPOINT);
-//       const data = await res.json();
-//       let station = data.destination;
-//       const stations = [];
-//       station.map((station) => {
-//         stations.push(station.destination);
-//       });
-//       dispatch({
-//         type: "SET_DESTINATION",
-//         destination: stations,
-//       });
-//       return dispatchLogin(await data);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-// };
-function destination() {
+// import stationData from "../stationData.json";
+// console.log(stationData);
+function destination(stationData) {
   return {
-    type: "HEADER_TITLE",
-    payload: {
-      destination
-    }
+    type: "SET_DESTINATION",
+    payload: stationData
   };
-} // export function title(title) {
-//     return {
-//         type: "HEADER_TITLE",
-//         payload: title,
-//     }
-// }
-// export function firstname(firstname) {
-//     return {
-//         type: "FIRST_NAME",
-//         payload: firstname,
-//     }
-// }
-// export function lastname(lastname) {
-//     return {
-//         type: "LAST_NAME",
-//         payload: lastname,
-//     }
-// }
-// export function phoneNumber(number) {
-//     return {
-//         type: "PHONE_NUMBER",
-//         payload: number,
-//     }
-// }
+}
 
-
-function account(account) {
+function firstname(firstname) {
   return {
-    type: "SET_ACCOUNT",
-    payload: account
+    type: "SET_FIRSTNAME",
+    payload: firstname
+  };
+}
+
+function lastname(lastname) {
+  return {
+    type: "SET_LASTNAME",
+    payload: lastname
+  };
+}
+
+function phoneNumber(phoneNumber) {
+  return {
+    type: "SET_PHONE_NUMBER",
+    payload: phoneNumber
+  };
+}
+
+function setDestinationdetails(detail) {
+  return {
+    type: "SET_DESTINATION_DETAIL",
+    payload: detail
   };
 }
 },{}],"components/Destination.js":[function(require,module,exports) {
@@ -38248,20 +38218,56 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactRedux = require("react-redux");
 
+var _reactRouterDom = require("react-router-dom");
+
 var _index = require("../actions/index");
+
+var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const DestinationDiv = _styledComponents.default.div`
+  ul {
+    padding-inline-start: 0;
+  }
+
+  li {
+    list-style: none;
+    padding-block-end: 16px;
+    padding-block-start: 16px;
+    margin-block-end: 45px;
+  }
+
+  a {
+    font-size: 28px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #ffffff;
+    padding-block-end: 29px;
+    padding-block-start: 28px;
+    padding-inline-end: 40px;
+    padding-inline-start: 45px;
+    text-align: center;
+    background-color: #0f0e17;
+  }
+`;
+
 function Destination({
-  destination
+  destinations
 }) {
-  console.log(destination);
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h2", null, "Where are you going?"), /*#__PURE__*/_react.default.createElement("p", null, destination.destination));
+  const stations = destinations.map(station => {
+    return /*#__PURE__*/_react.default.createElement("ul", {
+      key: station.id
+    }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+      to: `/${station.id}`
+    }, station.destination)));
+  });
+  return /*#__PURE__*/_react.default.createElement(DestinationDiv, null, /*#__PURE__*/_react.default.createElement("h2", null, "Where are you going?"), /*#__PURE__*/_react.default.createElement("div", null, stations));
 }
 
 function mapStateToProps(state) {
   return {
-    station: state.destination
+    destinations: state.destination
   };
 }
 
@@ -38272,7 +38278,7 @@ const mapDispatchToProps = {
 var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Destination);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../actions/index":"actions/index.js"}],"pages/home.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","../actions/index":"actions/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"pages/home.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38295,15 +38301,18 @@ function home() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = MyAccount;
+exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
+var _reactRedux = require("react-redux");
+
 var _styledComponents = _interopRequireDefault(require("styled-components"));
+
+var _index = require("../actions/index");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import { connect } from 'react-redux'
 const Account = _styledComponents.default.section`
   color: #0f0e17;
 
@@ -38359,20 +38368,43 @@ const Account = _styledComponents.default.section`
   }
 `;
 
-function MyAccount() {
+function MyAccount({
+  firstName,
+  lastName,
+  phoneNumber
+}) {
+  console.log(_index.firstname);
   return /*#__PURE__*/_react.default.createElement(Account, null, /*#__PURE__*/_react.default.createElement("div", {
     className: "accountHeader"
   }, /*#__PURE__*/_react.default.createElement("h2", null, "My acount"), /*#__PURE__*/_react.default.createElement("p", null, "Volana Sariaka")), /*#__PURE__*/_react.default.createElement("form", null, /*#__PURE__*/_react.default.createElement("label", {
     className: "formTitle"
   }, "My personnal informations:"), /*#__PURE__*/_react.default.createElement("label", null, "Firstname", /*#__PURE__*/_react.default.createElement("input", {
-    value: "Volana"
+    value: firstName
   })), /*#__PURE__*/_react.default.createElement("label", null, "Lastname", /*#__PURE__*/_react.default.createElement("input", {
-    value: "Sariaka"
+    value: lastName
   })), /*#__PURE__*/_react.default.createElement("label", null, "Phone number", /*#__PURE__*/_react.default.createElement("input", {
-    value: "674385709468"
+    value: phoneNumber
   })), /*#__PURE__*/_react.default.createElement("button", null, "Update")));
-} // export default connect((state) => ({account: state.account}))(MyAccount)
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js"}],"pages/myAccount.js":[function(require,module,exports) {
+}
+
+function mapStateToProps(state) {
+  return {
+    firstName: state.firstname,
+    lastName: state.lastname,
+    phoneNumber: state.phoneNumber
+  };
+}
+
+const mapDispatchToProps = {
+  firstname: _index.firstname,
+  lastname: _index.lastname,
+  phoneNumber: _index.phoneNumber
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MyAccount);
+
+exports.default = _default;
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../actions/index":"actions/index.js"}],"pages/myAccount.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38389,7 +38421,68 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function myAccount() {
   return /*#__PURE__*/_react.default.createElement(_MyAccount.default, null);
 }
-},{"react":"node_modules/react/index.js","../components/MyAccount":"components/MyAccount.js"}],"components/Header.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../components/MyAccount":"components/MyAccount.js"}],"components/DestinationDetail.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactRedux = require("react-redux");
+
+var _reactRouterDom = require("react-router-dom");
+
+var _index = require("../actions/index");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function DestinationDetail({
+  destinations
+}) {
+  const {
+    destinationId
+  } = (0, _reactRouterDom.useParams)();
+  console.log(destinationId);
+  const stationDetails = destinations !== [] && destinations.find(station => station.id == destinationId);
+  console.log(stationDetails);
+  let date = new Date(stationDetails?.departureTime);
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h2", null, "Next trips to:"), /*#__PURE__*/_react.default.createElement("p", null, stationDetails?.destination)), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, stationDetails?.departureTime)), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, stationDetails?.destination)), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Book a seat")));
+}
+
+function mapStateToProps(state) {
+  return {
+    destinations: state.destination
+  };
+}
+
+const mapDispatchToProps = {
+  destination: _index.destination
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DestinationDetail);
+
+exports.default = _default;
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","../actions/index":"actions/index.js"}],"pages/destinationDetail.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = destinationDetail;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _DestinationDetail = _interopRequireDefault(require("../components/DestinationDetail"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function destinationDetail() {
+  return /*#__PURE__*/_react.default.createElement(_DestinationDetail.default, null);
+}
+},{"react":"node_modules/react/index.js","../components/DestinationDetail":"components/DestinationDetail.js"}],"components/Header.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38406,6 +38499,8 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 var _home = _interopRequireDefault(require("../pages/home"));
 
 var _myAccount = _interopRequireDefault(require("../pages/myAccount"));
+
+var _destinationDetail = _interopRequireDefault(require("../pages/destinationDetail"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38444,9 +38539,12 @@ function Header() {
     path: "/"
   }, /*#__PURE__*/_react.default.createElement(_home.default, null)), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     path: "/account"
-  }, /*#__PURE__*/_react.default.createElement(_myAccount.default, null)))));
+  }, /*#__PURE__*/_react.default.createElement(_myAccount.default, null)), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
+    exact: true,
+    path: "/:destinationId"
+  }, /*#__PURE__*/_react.default.createElement(_destinationDetail.default, null)))));
 }
-},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../pages/home":"pages/home.js","../pages/myAccount":"pages/myAccount.js"}],"App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../pages/home":"pages/home.js","../pages/myAccount":"pages/myAccount.js","../pages/destinationDetail":"pages/destinationDetail.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38472,41 +38570,15 @@ const Content = _styledComponents.default.div`
 function App() {
   return /*#__PURE__*/_react.default.createElement(Content, null, /*#__PURE__*/_react.default.createElement(_Header.default, null));
 }
-},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./components/Header":"components/Header.js"}],"node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function createThunkMiddleware(extraArgument) {
-  return function (_ref) {
-    var dispatch = _ref.dispatch,
-        getState = _ref.getState;
-    return function (next) {
-      return function (action) {
-        if (typeof action === 'function') {
-          return action(dispatch, getState, extraArgument);
-        }
-
-        return next(action);
-      };
-    };
-  };
-}
-
-var thunk = createThunkMiddleware();
-thunk.withExtraArgument = createThunkMiddleware;
-var _default = thunk;
-exports.default = _default;
-},{}],"reducers/index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","./components/Header":"components/Header.js"}],"reducers/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.destination = destination;
+exports.setDestinationDetail = setDestinationDetail;
+exports.myAccount = myAccount;
 exports.account = account;
 exports.default = void 0;
 
@@ -38528,33 +38600,44 @@ var _redux = require("redux");
 //       return state;
 //   }
 // }
-const initialState = {
-  destination: []
-};
-
-function destination(state = initialState, action) {
+// const initialState = {
+//   destination: []
+// }
+function destination(state = [], action) {
   switch (action.type) {
     case "SET_DESTINATION":
-      return { ...state,
-        destination: action.payload
-      };
+      return [...state, action.payload];
 
     default:
       return state;
   }
-} // export function myAccount(state = "", action) {
-//   switch (action.type) {
-//     case "FIRST_NAME":
-//       return action.payload;
-//     case "LAST_NAME":
-//       return action.payload;
-//     case "PHONE_NUMBER":
-//       return action.payload;
-//     default:
-//       return state;
-//   }
-// }
+}
 
+function setDestinationDetail(state = "", action) {
+  switch (action.type) {
+    case "SET_DESTINATION_DETAIL":
+      return action.payload;
+
+    default:
+      return state;
+  }
+}
+
+function myAccount(state = "", action) {
+  switch (action.type) {
+    case "SET_FIRSTNAME":
+      return action.payload;
+
+    case "SET_LASTNAME":
+      return action.payload;
+
+    case "SET_PHONE_NUMBER":
+      return action.payload;
+
+    default:
+      return state;
+  }
+}
 
 function account(state = "", action) {
   switch (action.type) {
@@ -38573,23 +38656,1662 @@ var _default = (0, _redux.combineReducers)({
 });
 
 exports.default = _default;
-},{"redux":"node_modules/redux/es/redux.js"}],"state.js":[function(require,module,exports) {
+},{"redux":"node_modules/redux/es/redux.js"}],"stationData.json":[function(require,module,exports) {
+module.exports = [{
+  "id": 0,
+  "destination": "Antananarivo",
+  "departureTime": 1613397600,
+  "driverName": "Tom Cruise",
+  "driverContact": "034585514",
+  "estimatedDuration": "12h",
+  "breaks": "2",
+  "price": 20000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 1,
+  "destination": "Antananarivo",
+  "departureTime": 1613480400,
+  "driverName": "James Bond",
+  "driverContact": "034585884",
+  "estimatedDuration": "12h",
+  "breaks": "2",
+  "price": 20000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 2,
+  "destination": "Antananarivo",
+  "departureTime": 1613570400,
+  "driverName": "Tom Cruise",
+  "driverContact": "034585177",
+  "estimatedDuration": "12h",
+  "breaks": "2",
+  "price": 20000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 3,
+  "destination": "Toamasina",
+  "departureTime": 1613397600,
+  "driverName": "Brad Pitt",
+  "driverContact": "034585177",
+  "estimatedDuration": "7h",
+  "breaks": "2",
+  "price": 20000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 4,
+  "destination": "Toamasina",
+  "departureTime": 1613480400,
+  "driverName": "Brad Pitt",
+  "driverContact": "034585177",
+  "estimatedDuration": "7h",
+  "breaks": "2",
+  "price": 10000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 5,
+  "destination": "Vatomandry",
+  "departureTime": 1613278800,
+  "driverName": "Brad Pitt",
+  "driverContact": "034585177",
+  "estimatedDuration": "5h",
+  "breaks": "1",
+  "price": 10000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 6,
+  "destination": "Vatomandry",
+  "departureTime": 1613397600,
+  "driverName": "Brad Pitt",
+  "driverContact": "034585177",
+  "estimatedDuration": "5h",
+  "breaks": "1",
+  "price": 10000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 7,
+  "destination": "Vatomandry",
+  "departureTime": 1613570400,
+  "driverName": "Brad Pitt",
+  "driverContact": "034585177",
+  "estimatedDuration": "5h",
+  "breaks": "1",
+  "price": 10000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 8,
+  "destination": "Moramanga",
+  "departureTime": 1613570400,
+  "driverName": "James Bond",
+  "driverContact": "034585177",
+  "estimatedDuration": "6h",
+  "breaks": "1",
+  "price": 15000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 9,
+  "destination": "Moramanga",
+  "departureTime": 1613656800,
+  "driverName": "James Bond",
+  "driverContact": "034585177",
+  "estimatedDuration": "6h",
+  "breaks": "1",
+  "price": 15000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": false,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 10,
+  "destination": "Moramanga",
+  "departureTime": 1613743200,
+  "driverName": "James Bond",
+  "driverContact": "034585177",
+  "estimatedDuration": "6h",
+  "breaks": "1",
+  "price": 15000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}, {
+  "id": 11,
+  "destination": "Moramanga",
+  "departureTime": 1613829600,
+  "driverName": "James Bond",
+  "driverContact": "034585177",
+  "estimatedDuration": "6h",
+  "breaks": "1",
+  "price": 15000,
+  "seats": [{
+    "id": 0,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 1,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 2,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 3,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 4,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 5,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 6,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 7,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 8,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 9,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 10,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 11,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 12,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 13,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 14,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 15,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": true
+  }, {
+    "id": 16,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }, {
+    "id": 17,
+    "isAvailable": true,
+    "passengerFirstName": "",
+    "passengerLastName": "",
+    "passengerPhoneNumber": "",
+    "extraLuggage": false
+  }]
+}];
+},{}],"state.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _default = {
-  destination: [],
-  account: "" // title: "",
-  // firstname: "",
-  // lastname: "",
-  // phoneNumber: ""
 
+var _stationData = _interopRequireDefault(require("./stationData.json"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = {
+  destination: _stationData.default,
+  account: {},
+  setDestinationdetails: "",
+  firstname: "Sariaka",
+  lastname: "Natacha",
+  phoneNumber: "034 34 034 34"
 };
 exports.default = _default;
-},{}],"store.js":[function(require,module,exports) {
+},{"./stationData.json":"stationData.json"}],"store.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38599,19 +40321,18 @@ exports.default = void 0;
 
 var _redux = require("redux");
 
-var _reduxThunk = _interopRequireDefault(require("redux-thunk"));
-
 var _reducers = _interopRequireDefault(require("./reducers"));
 
 var _state = _interopRequireDefault(require("./state"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import thunk from "redux-thunk";
 // const middlewares = [thunk]
-const store = (0, _redux.createStore)(_reducers.default, _state.default, (0, _redux.applyMiddleware)(_reduxThunk.default));
+const store = (0, _redux.createStore)(_reducers.default, _state.default);
 var _default = store;
 exports.default = _default;
-},{"redux":"node_modules/redux/es/redux.js","redux-thunk":"node_modules/redux-thunk/es/index.js","./reducers":"reducers/index.js","./state":"state.js"}],"index.js":[function(require,module,exports) {
+},{"redux":"node_modules/redux/es/redux.js","./reducers":"reducers/index.js","./state":"state.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -38659,7 +40380,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58399" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63919" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

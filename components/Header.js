@@ -4,6 +4,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import Destination from "../pages/home";
 import MyAccount from "../pages/myAccount";
+import DestinationDetail from "../pages/destinationDetail";
 
 const HeaderStyle = styled.div`
   font-size: 18px;
@@ -44,6 +45,9 @@ export default function Header() {
           </Route>
           <Route path="/account">
             <MyAccount />
+          </Route>
+          <Route exact path="/:destinationId">
+            <DestinationDetail />
           </Route>
         </Switch>
       </div>

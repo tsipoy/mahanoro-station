@@ -1,6 +1,7 @@
 import React from "react";
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import styled from "styled-components";
+import { firstname, lastname, phoneNumber } from "../actions/index"
 
 const Account = styled.section`
   color: #0f0e17;
@@ -56,7 +57,9 @@ const Account = styled.section`
     border: none;
   }
 `;
-export default function MyAccount() {
+
+function MyAccount({ firstName, lastName, phoneNumber }) {
+  console.log(firstname);
   return (
     <Account>
       <div className="accountHeader">
@@ -67,15 +70,15 @@ export default function MyAccount() {
         <label className="formTitle">My personnal informations:</label>
         <label>
           Firstname
-          <input value="Volana" />
+          <input value={firstName} />
         </label>
         <label>
           Lastname
-          <input value="Sariaka" />
+          <input value={lastName} />
         </label>
         <label>
           Phone number
-          <input value="674385709468" />
+          <input value={phoneNumber} />
         </label>
         <button>Update</button>
       </form>
@@ -83,4 +86,18 @@ export default function MyAccount() {
   );
 }
 
-// export default connect((state) => ({account: state.account}))(MyAccount)
+function mapStateToProps(state) {
+  return {
+    firstName: state.firstname,
+    lastName: state.lastname,
+    phoneNumber: state.phoneNumber,
+  }
+}
+
+const mapDispatchToProps = {
+  firstname, 
+  lastname, 
+  phoneNumber,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyAccount)
