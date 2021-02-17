@@ -7,13 +7,16 @@ import MyAccount from "../pages/myAccount";
 import DestinationDetail from "../pages/destinationDetail";
 import Trip from "../pages/trip";
 
+import busIcon from "../images/bus-icon.svg";
+console.log(busIcon);
+
 const HeaderStyle = styled.div`
   font-size: 18px;
   line-height: 20px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-around;
+  align-items: baseline;
   background-color: #0f0e17;
   padding-block-start: 28px;
   padding-block-end: 29px;
@@ -21,14 +24,39 @@ const HeaderStyle = styled.div`
   margin-inline-start: -20px;
 
   h1 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 100;
     color: #ffffff;
+  }
+
+  a:nth-of-type(1) {
+    color: #fffffe;
+    font-size: 19px;
+    line-height: 43px;
   }
 
   a {
     text-decoration: none;
     color: #a7a9be;
+  }
+
+  img {
+    padding-inline-end: 5px;
+    max-width: 84px;
+    padding-inline-end: 16px;
+  }
+
+  @media (min-width: 700px) {
+    margin-inline-end: -159px;
+    margin-inline-start: -266px;
+
+    a {
+      font-size: 28px;
+    }
+
+    img {
+      padding-inline-end: 32px;
+    }
   }
 `;
 
@@ -36,7 +64,10 @@ export default function Header() {
   return (
     <div>
       <HeaderStyle>
-        <Link to="/">Mahanoro Station</Link>
+        <Link to="/">
+          <img src={busIcon} alt="Bus Icon" />
+          Mahanoro Station
+        </Link>
         <Link to="/account">My account</Link>
       </HeaderStyle>
       <div>
@@ -47,15 +78,14 @@ export default function Header() {
           <Route path="/account">
             <MyAccount />
           </Route>
-          <Route exact path="/:destinationId">
+          <Route path="/:destinationId">
             <DestinationDetail />
           </Route>
           <Route>
-            <Trip exact path="/:destinationId/:tripId" />
+            <Trip path="/:tripId" />
           </Route>
         </Switch>
       </div>
     </div>
   );
 }
-

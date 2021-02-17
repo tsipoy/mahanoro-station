@@ -1,30 +1,40 @@
 import React from "react";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import styled from "styled-components";
-import { firstname, lastname, phoneNumber } from "../actions/index"
+
+import { firstname, lastname, phoneNumber } from "../actions/index";
+
+import userInterface from "../images/user-interface.svg";
 
 const Account = styled.section`
   color: #0f0e17;
 
-  .accountHeader {
-    text-align: center;
+  .account-header {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 400px;
+    margin: auto;
+    padding-block-end: 50px;
+    padding-block-start: 50px;
+    align-items: center;
   }
 
   h2 {
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 36px;
+    line-height: 47px;
   }
 
   p {
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 29px;
+    line-height: 40px;
     color: #e53170;
     margin-block-start: -16px;
   }
 
-  .formTitle {
+  .formTitle,
+  h4 {
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: normal;
     color: #0f0e17;
     padding-block-end: 32px;
     padding-block-start: 16px;
@@ -37,13 +47,20 @@ const Account = styled.section`
   }
 
   input {
-    font-size: 16px;
     background-color: #000000;
-    color: #ff8906;
     padding-inline-start: 22px;
     padding-block-start: 28px;
     padding-block-end: 28px;
     margin-block-start: 16px;
+  }
+
+  input::placeholder {
+    font-size: 16px;
+    color: #ff8906;
+  }
+
+  .button {
+    text-align: end;
   }
 
   button {
@@ -56,32 +73,55 @@ const Account = styled.section`
     color: #ffffff;
     border: none;
   }
+
+  img {
+    max-width: 134px;
+  }
+
+  @media (min-width: 700px) {
+    .information {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: baseline;
+    }
+  }
 `;
 
-function MyAccount({ firstName, lastName, phoneNumber }) {
+function MyAccount() {
   console.log(firstname);
   return (
     <Account>
-      <div className="accountHeader">
-        <h2>My acount</h2>
-        <p>Volana Sariaka</p>
+      <div className="account-header">
+        <img src={userInterface} alt="User Iterface" />
+        <div>
+          <h2>My acount</h2>
+          <p>Volana Sariaka</p>
+        </div>
       </div>
-      <form>
-        <label className="formTitle">My personnal informations:</label>
-        <label>
-          Firstname
-          <input value={firstName} />
-        </label>
-        <label>
-          Lastname
-          <input value={lastName} />
-        </label>
-        <label>
-          Phone number
-          <input value={phoneNumber} />
-        </label>
-        <button>Update</button>
-      </form>
+      <div className="information">
+        <form>
+          <label className="formTitle">My personnal informations:</label>
+          <label>
+            Firstname
+            <input placeholder="Volana" />
+          </label>
+          <label>
+            Lastname
+            <input placeholder="Sariaka" />
+          </label>
+          <label>
+            Phone number
+            <input placeholder=" 034 34 034 34" />
+          </label>
+          <div className="button">
+            <button>Update</button>
+          </div>
+        </form>
+        <div>
+          <h4>My bookings: </h4>
+        </div>
+      </div>
     </Account>
   );
 }
@@ -91,13 +131,13 @@ function mapStateToProps(state) {
     firstName: state.firstname,
     lastName: state.lastname,
     phoneNumber: state.phoneNumber,
-  }
+  };
 }
 
 const mapDispatchToProps = {
-  firstname, 
-  lastname, 
+  firstname,
+  lastname,
   phoneNumber,
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyAccount)
+export default connect(mapStateToProps, mapDispatchToProps)(MyAccount);

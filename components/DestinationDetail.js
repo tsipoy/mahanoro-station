@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-const TripDiv = styled.div`
+const StationDiv = styled.div`
   .about-trip {
     display: flex;
     flex-direction: row;
@@ -38,6 +38,10 @@ const TripDiv = styled.div`
     padding-inline-start: 25px;
     padding-inline-end: 25px;
   }
+
+  span {
+      color: #E53170;
+  }
 `;
 
 import { destination } from "../actions/index";
@@ -60,7 +64,7 @@ function DestinationDetail({ destinations, weekdays }) {
   const date = day + " / " + month + " / " + year;
 
   return (
-    <TripDiv>
+    <StationDiv>
       <div className="trip-header">
         <h2>Next trips to:</h2>
         <p>{stationDetails?.destination}</p>
@@ -72,11 +76,11 @@ function DestinationDetail({ destinations, weekdays }) {
         </div>
         <div className="seats-left">
           <p>{date}</p>
-          <p>seats left</p>
+          <p><span>{stationDetails?.breaks}</span> seats left</p>
         </div>
-        <Link to={`/${stationDetails?.destination}`}>Book a seat</Link>
+        <Link to={`/${stationDetails?.driverContact}`}>Book a seat</Link>
       </div>
-    </TripDiv>
+    </StationDiv>
   );
 }
 

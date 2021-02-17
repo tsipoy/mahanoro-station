@@ -1,11 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { destination } from "../actions/index";
-
 import styled from "styled-components";
 
+import { destination } from "../actions/index";
+import bus from "../images/bus.svg";
+import busStation from "../images/station.svg";
+
+
 const DestinationDiv = styled.div`
+  .destination-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding-block-end: 100px;
+    padding-block-start: 100px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
   ul {
     padding-inline-start: 0;
   }
@@ -14,11 +30,11 @@ const DestinationDiv = styled.div`
     list-style: none;
     padding-block-end: 16px;
     padding-block-start: 16px;
-    margin-block-end: 45px;
+    /* margin-block-end: 45px; */
   }
 
   a {
-    font-size: 28px;
+    font-size: 20px;
     text-decoration: none;
     text-transform: uppercase;
     color: #ffffff;
@@ -28,28 +44,49 @@ const DestinationDiv = styled.div`
     padding-inline-start: 45px;
     text-align: center;
     background-color: #0f0e17;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+  }
+
+  img {
+    padding-inline-end: 5px;
+    max-width: 84px;
+    padding-inline-end: 16px;
+  }
+
+  @media (min-width: 700px) {
+    .station_lists {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    li {
+      margin-inline-start: 107px;
+    }
   }
 `;
 
-
-
-
 function Destination({ destinations }) {
-
   const stations = destinations.map((station) => {
     return (
-      <ul key={station.id}>
-        <li> 
-            <Link to={`/${station.id}`}>{station.destination}</Link>
-        </li>
-      </ul>
+      <li key={station.id}>
+        <Link to={`/${station.id}`}>
+          <img src={busStation} alt="Bus" />
+          {station.destination}
+        </Link>
+      </li>
     );
   });
 
   return (
     <DestinationDiv>
-      <h2>Where are you going?</h2>
-      <div>{stations}</div>
+      <div className="destination-header">
+        <img src={bus} alt="Bus" />
+        <h2>Where are you going?</h2>
+      </div>
+      <ul className="station_lists">{stations}</ul>
     </DestinationDiv>
   );
 }

@@ -8,6 +8,11 @@ const Content = styled.div `
     padding-inline-start: 20px;
     padding-block-end: 20px;
     padding-block-start: 20px;
+
+    @media(min-width: 700px) {
+        margin: auto;
+        max-width: calc(1440px - 532px);
+    }
 `;
 
 export default function App() {

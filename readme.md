@@ -2,7 +2,7 @@
 
 ![Design preview for the Mahanoro station coding challenge](./design/1.png)
 
-## The challenge
+<!-- ## The challenge
 
 Your challenge is to build out this app and get it working with **redux**, **compound components** and **styled components**, while making it look as close to the design as possible.
 
@@ -35,4 +35,50 @@ Feel free to use any workflow that you feel comfortable with. Below is a suggest
 
 You have until **Tuesday** at **15h30** to submit your github link and netlify link on this form : https://forms.gle/ikBWC2MokmdH4jdw6
 
-**Have fun building!** 🚀
+**Have fun building!** 🚀 -->
+
+
+
+<!-- Introduce your projects by taking a screenshot or a gif. Try to tell visitors a story about your project by answering:
+
+-   Where can I see your demo?
+-   What was your experience?
+-   What have you learned/improved?
+-   Your wisdom? :) -->
+
+### Structure of the project.
+
+- I don't have a src or design folder so I worked with mahanoro-station folder.
+- I have five components: Destination.js, DestinationDetails.js, Header.js, Myaccount.js and Trip.js
+- I have pages folder which holds the pages files
+- I could not use compound component but this project is buld with *redux and style-components*
+- I combined all the pages in the in the Header component using switch and route
+- As it is a redux project, I also have a state.js which handles all of the states, store.js for storing reducers and state and finally the action which handles all the actions.
+
+### If I had more time,
+
+I would like continuing to search a way to get the four objects that appears in the homepage.
+I always get the same date in the destination details.
+I couldn't finish most of the requirement so If I had more time I would like continuing them.
+
+### Did you learn anything new while working on this project?
+
+I did't learn so much as I got stuck from the begining. 
+
+### The most challenging parts
+Most of the parts are challenging for me. What I mean is that I always have difficulties about the logic. For example, I should get 4 stations in the homepage, actually I got a lot. 
+Yet, I still need more practice.
+I could not manage most of the big part in this project.
+
+### I would like to have more explanation about: 
+- I would like having more explanation about fetchind API redux
+- I am a bit confused about mapSateToProps and mapDispatchToProps
+
+## Contact
+
+-   Website [your-website.com](https://mahanoro-station-natacha.netlify.app/)
+-   GitHub [@your-username](https://github.com/tsipoy/mahanoro-station)
+
+
+
+

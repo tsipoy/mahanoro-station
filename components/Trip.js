@@ -7,7 +7,7 @@ import { destination } from "../actions/index";
 function Trip({ destinations }) {
   const { tripId } = useParams();
   const tripDetails =
-    destinations !== [] && destinations.find((trip) => trip.destination == tripId);
+    destinations !== [] && destinations.find((trip) => trip.driverContact == tripId);
 
     return (
         <div>
