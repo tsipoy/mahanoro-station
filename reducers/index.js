@@ -55,6 +55,16 @@ export function myAccount(state = "", action) {
 export function account(state = "", action) {
   switch (action.type) {
     case "SET_ACCOUNT":
+      return [...state, action.payload];
+    default:
+      return state;
+  }
+}
+
+
+export function daysOfTheWeek(state = [], action) {
+  switch (action.type) {
+    case "SET_DAY_OF_THE_WEEK":
       return action.payload;
     default:
       return state;
@@ -65,4 +75,5 @@ export default combineReducers({
   // title,
   account,
   destination,
+  daysOfTheWeek,
 });

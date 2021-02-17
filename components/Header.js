@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Destination from "../pages/home";
 import MyAccount from "../pages/myAccount";
 import DestinationDetail from "../pages/destinationDetail";
+import Trip from "../pages/trip";
 
 const HeaderStyle = styled.div`
   font-size: 18px;
@@ -48,6 +49,9 @@ export default function Header() {
           </Route>
           <Route exact path="/:destinationId">
             <DestinationDetail />
+          </Route>
+          <Route>
+            <Trip exact path="/:destinationId/:tripId" />
           </Route>
         </Switch>
       </div>

@@ -38166,6 +38166,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.destination = destination;
 exports.firstname = firstname;
+exports.daysOfTheWeek = daysOfTheWeek;
 exports.lastname = lastname;
 exports.phoneNumber = phoneNumber;
 exports.setDestinationdetails = setDestinationdetails;
@@ -38183,6 +38184,13 @@ function firstname(firstname) {
   return {
     type: "SET_FIRSTNAME",
     payload: firstname
+  };
+}
+
+function daysOfTheWeek(days) {
+  return {
+    type: "SET_DAY_OF_THE_WEEK",
+    payload: days
   };
 }
 
@@ -38435,26 +38443,81 @@ var _reactRedux = require("react-redux");
 
 var _reactRouterDom = require("react-router-dom");
 
+var _styledComponents = _interopRequireDefault(require("styled-components"));
+
 var _index = require("../actions/index");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const TripDiv = _styledComponents.default.div`
+  .about-trip {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .trip-header h2 {
+    font-size: 24px;
+    line-height: 26px;
+    padding-block-start: 32px;
+  }
+
+  .trip-header p {
+    font-size: 24px;
+    line-height: 26px;
+    margin-block-start: -10px;
+    color: #e53170;
+  }
+
+  .trip-departure {
+    color: #ff8906;
+  }
+
+  a {
+    text-decoration: none;
+    color: #ffffff;
+    text-align: center;
+    background-color: #e53170;
+    padding-block-start: 20px;
+    padding-block-end: 20px;
+    padding-inline-start: 25px;
+    padding-inline-end: 25px;
+  }
+`;
+
 function DestinationDetail({
-  destinations
+  destinations,
+  weekdays
 }) {
   const {
     destinationId
   } = (0, _reactRouterDom.useParams)();
-  console.log(destinationId);
   const stationDetails = destinations !== [] && destinations.find(station => station.id == destinationId);
-  console.log(stationDetails);
-  let date = new Date(stationDetails?.departureTime);
-  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h2", null, "Next trips to:"), /*#__PURE__*/_react.default.createElement("p", null, stationDetails?.destination)), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, stationDetails?.departureTime)), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, stationDetails?.destination)), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", null, "Book a seat")));
+  let currrentDate = new Date(stationDetails?.departureTime);
+  const month = currrentDate.getMonth() + 1;
+  const day = currrentDate.getDate();
+  const year = currrentDate.getFullYear();
+  const time = currrentDate.getUTCHours();
+  const weekDay = weekdays[currrentDate.getDay()];
+  const date = day + " / " + month + " / " + year;
+  return /*#__PURE__*/_react.default.createElement(TripDiv, null, /*#__PURE__*/_react.default.createElement("div", {
+    className: "trip-header"
+  }, /*#__PURE__*/_react.default.createElement("h2", null, "Next trips to:"), /*#__PURE__*/_react.default.createElement("p", null, stationDetails?.destination)), /*#__PURE__*/_react.default.createElement("div", {
+    className: "about-trip"
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    className: "trip-departure"
+  }, /*#__PURE__*/_react.default.createElement("p", null, weekDay), /*#__PURE__*/_react.default.createElement("p", null, time, ":00")), /*#__PURE__*/_react.default.createElement("div", {
+    className: "seats-left"
+  }, /*#__PURE__*/_react.default.createElement("p", null, date), /*#__PURE__*/_react.default.createElement("p", null, "seats left")), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+    to: `/${stationDetails?.destination}`
+  }, "Book a seat")));
 }
 
 function mapStateToProps(state) {
   return {
-    destinations: state.destination
+    destinations: state.destination,
+    weekdays: state.daysOfTheWeek
   };
 }
 
@@ -38465,7 +38528,7 @@ const mapDispatchToProps = {
 var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DestinationDetail);
 
 exports.default = _default;
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","../actions/index":"actions/index.js"}],"pages/destinationDetail.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../actions/index":"actions/index.js"}],"pages/destinationDetail.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38482,7 +38545,65 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function destinationDetail() {
   return /*#__PURE__*/_react.default.createElement(_DestinationDetail.default, null);
 }
-},{"react":"node_modules/react/index.js","../components/DestinationDetail":"components/DestinationDetail.js"}],"components/Header.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../components/DestinationDetail":"components/DestinationDetail.js"}],"components/Trip.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactRedux = require("react-redux");
+
+var _reactRouterDom = require("react-router-dom");
+
+var _index = require("../actions/index");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Trip({
+  destinations
+}) {
+  const {
+    tripId
+  } = (0, _reactRouterDom.useParams)();
+  const tripDetails = destinations !== [] && destinations.find(trip => trip.destination == tripId);
+  return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h2", null, "Book a seat to:"), /*#__PURE__*/_react.default.createElement("p", null, tripDetails?.destination)));
+}
+
+function mapStateToProps() {
+  return {
+    destinations: state.destination
+  };
+}
+
+const mapDispatchToProps = {
+  destination: _index.destination
+};
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Trip);
+
+exports.default = _default;
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","../actions/index":"actions/index.js"}],"pages/trip.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = trip;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _Trip = _interopRequireDefault(require("../components/Trip"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function trip() {
+  return /*#__PURE__*/_react.default.createElement(_Trip.default, null);
+}
+},{"react":"node_modules/react/index.js","../components/Trip":"components/Trip.js"}],"components/Header.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38501,6 +38622,8 @@ var _home = _interopRequireDefault(require("../pages/home"));
 var _myAccount = _interopRequireDefault(require("../pages/myAccount"));
 
 var _destinationDetail = _interopRequireDefault(require("../pages/destinationDetail"));
+
+var _trip = _interopRequireDefault(require("../pages/trip"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38542,9 +38665,12 @@ function Header() {
   }, /*#__PURE__*/_react.default.createElement(_myAccount.default, null)), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, {
     exact: true,
     path: "/:destinationId"
-  }, /*#__PURE__*/_react.default.createElement(_destinationDetail.default, null)))));
+  }, /*#__PURE__*/_react.default.createElement(_destinationDetail.default, null)), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Route, null, /*#__PURE__*/_react.default.createElement(_trip.default, {
+    exact: true,
+    path: "/:destinationId/:tripId"
+  })))));
 }
-},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../pages/home":"pages/home.js","../pages/myAccount":"pages/myAccount.js","../pages/destinationDetail":"pages/destinationDetail.js"}],"App.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-router-dom":"node_modules/react-router-dom/esm/react-router-dom.js","styled-components":"node_modules/styled-components/dist/styled-components.browser.esm.js","../pages/home":"pages/home.js","../pages/myAccount":"pages/myAccount.js","../pages/destinationDetail":"pages/destinationDetail.js","../pages/trip":"pages/trip.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38580,6 +38706,7 @@ exports.destination = destination;
 exports.setDestinationDetail = setDestinationDetail;
 exports.myAccount = myAccount;
 exports.account = account;
+exports.daysOfTheWeek = daysOfTheWeek;
 exports.default = void 0;
 
 var _redux = require("redux");
@@ -38642,6 +38769,16 @@ function myAccount(state = "", action) {
 function account(state = "", action) {
   switch (action.type) {
     case "SET_ACCOUNT":
+      return [...state, action.payload];
+
+    default:
+      return state;
+  }
+}
+
+function daysOfTheWeek(state = [], action) {
+  switch (action.type) {
+    case "SET_DAY_OF_THE_WEEK":
       return action.payload;
 
     default:
@@ -38652,7 +38789,8 @@ function account(state = "", action) {
 var _default = (0, _redux.combineReducers)({
   // title,
   account,
-  destination
+  destination,
+  daysOfTheWeek
 });
 
 exports.default = _default;
@@ -40304,6 +40442,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = {
   destination: _stationData.default,
+  daysOfTheWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   account: {},
   setDestinationdetails: "",
   firstname: "Sariaka",
@@ -40380,7 +40519,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63919" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52140" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

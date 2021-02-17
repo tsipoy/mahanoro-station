@@ -14,6 +14,13 @@ export function firstname(firstname) {
   };
 }
 
+export function daysOfTheWeek(days) {
+  return {
+    type: "SET_DAY_OF_THE_WEEK",
+    payload: days,
+  };
+}
+
 export function lastname(lastname) {
   return {
     type: "SET_LASTNAME",

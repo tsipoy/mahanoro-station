@@ -1,50 +1,94 @@
-import React from 'react'
-import { connect } from 'react-redux';
-import { useParams } from "react-router-dom";
+import React from "react";
+import { connect } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import styled from "styled-components";
 
-import { destination } from "../actions/index"
+const TripDiv = styled.div`
+  .about-trip {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 
+  .trip-header h2 {
+    font-size: 24px;
+    line-height: 26px;
+    padding-block-start: 32px;
+  }
 
-function DestinationDetail( { destinations }) {
+  .trip-header p {
+    font-size: 24px;
+    line-height: 26px;
+    margin-block-start: -10px;
+    color: #e53170;
+  }
 
+  .trip-departure {
+    color: #ff8906;
+  }
+
+  a {
+    text-decoration: none;
+    color: #ffffff;
+    text-align: center;
+    background-color: #e53170;
+    padding-block-start: 20px;
+    padding-block-end: 20px;
+    padding-inline-start: 25px;
+    padding-inline-end: 25px;
+  }
+`;
+
+import { destination } from "../actions/index";
+
+function DestinationDetail({ destinations, weekdays }) {
   const { destinationId } = useParams();
 
-  console.log(destinationId);
-  
-  const stationDetails = destinations !== [] && destinations.find((station) => station.id == destinationId);
+  const stationDetails =
+    destinations !== [] &&
+    destinations.find((station) => station.id == destinationId);
 
-  console.log(stationDetails);
+  let currrentDate = new Date(stationDetails?.departureTime);
+  const month = currrentDate.getMonth() + 1;
+  const day = currrentDate.getDate();
+  const year = currrentDate.getFullYear();
+  const time = currrentDate.getUTCHours();
 
-  let date = new Date(stationDetails?.departureTime);
+  const weekDay = weekdays[currrentDate.getDay()];
 
-    return (
-        <div>
-            <div>
-                <h2>Next trips to:</h2>
-                <p>{stationDetails?.destination}</p>
-            </div>
-            <div>
-                <p>{stationDetails?.departureTime}</p>
-            </div>
-            <div>
-                {/* <p>{stationDetails?.seats.}</p> */}
-                <p>{stationDetails?.destination}</p>
-            </div>
-            <div>
-                <p>Book a seat</p>
-            </div>
+  const date = day + " / " + month + " / " + year;
+
+  return (
+    <TripDiv>
+      <div className="trip-header">
+        <h2>Next trips to:</h2>
+        <p>{stationDetails?.destination}</p>
+      </div>
+      <div className="about-trip">
+        <div className="trip-departure">
+          <p>{weekDay}</p>
+          <p>{time}:00</p>
         </div>
-    )
+        <div className="seats-left">
+          <p>{date}</p>
+          <p>seats left</p>
+        </div>
+        <Link to={`/${stationDetails?.destination}`}>Book a seat</Link>
+      </div>
+    </TripDiv>
+  );
 }
 
 function mapStateToProps(state) {
-    return {
-        destinations: state.destination
-    }
+  return {
+    destinations: state.destination,
+    weekdays: state.daysOfTheWeek,
+  };
 }
 
 const mapDispatchToProps = {
-    destination,   
-}
+  destination,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DestinationDetail);
