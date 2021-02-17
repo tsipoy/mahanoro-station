@@ -7,7 +7,6 @@ import { destination } from "../actions/index";
 import bus from "../images/bus.svg";
 import busStation from "../images/station.svg";
 
-
 const DestinationDiv = styled.div`
   .destination-header {
     display: flex;
@@ -69,9 +68,16 @@ const DestinationDiv = styled.div`
 `;
 
 function Destination({ destinations }) {
-  const stations = destinations.map((station) => {
+  const group = {};
+
+  destinations.forEach(({ destination, ...rest }) => {
+    group[destination] = group[destination] || { destination, series: [] };
+    group[destination].series.push(rest);
+  });
+
+  const stations = Object.values(group).map((station) => {
     return (
-      <li key={station.id}>
+      <li key={station.length}>
         <Link to={`/${station.id}`}>
           <img src={busStation} alt="Bus" />
           {station.destination}

@@ -38305,9 +38305,20 @@ const DestinationDiv = _styledComponents.default.div`
 function Destination({
   destinations
 }) {
-  const stations = destinations.map(station => {
+  const group = {};
+  destinations.forEach(({
+    destination,
+    ...rest
+  }) => {
+    group[destination] = group[destination] || {
+      destination,
+      series: []
+    };
+    group[destination].series.push(rest);
+  });
+  const stations = Object.values(group).map(station => {
     return /*#__PURE__*/_react.default.createElement("li", {
-      key: station.id
+      key: station.length
     }, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
       to: `/${station.id}`
     }, /*#__PURE__*/_react.default.createElement("img", {
