@@ -7,6 +7,13 @@ export function destination(stationData) {
     }
 }
 
+export function stations(station) {
+  return {
+    type: "SET_STATION",
+    payload: station,
+  }
+}
+
 export function firstname(firstname) {
   return {
     type: "SET_FIRSTNAME",

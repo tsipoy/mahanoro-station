@@ -78,11 +78,11 @@ export default function Header() {
           <Route path="/account">
             <MyAccount />
           </Route>
-          <Route path="/:destinationId">
+          <Route path="/destinationDetail/:destinationId">
             <DestinationDetail />
           </Route>
-          <Route>
-            <Trip path="/:tripId" />
+          <Route path="/trip/:tripId">
+            <Trip  />
           </Route>
         </Switch>
       </div>

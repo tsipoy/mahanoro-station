@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { destination } from "../actions/index";
+import { destination, stations } from "../actions/index";
 import bus from "../images/bus.svg";
 import busStation from "../images/station.svg";
 
@@ -67,7 +67,7 @@ const DestinationDiv = styled.div`
   }
 `;
 
-function Destination({ destinations }) {
+function Destination({ destinations, station }) {
   const group = {};
 
   destinations.forEach(({ destination, ...rest }) => {
@@ -75,9 +75,11 @@ function Destination({ destinations }) {
     group[destination].series.push(rest);
   });
 
+  console.log(Object.values(group));
+
   const stations = Object.values(group).map((station) => {
     return (
-      <li key={station.length}>
+      <li key={station.destination}>
         <Link to={`/${station.id}`}>
           <img src={busStation} alt="Bus" />
           {station.destination}
@@ -86,13 +88,30 @@ function Destination({ destinations }) {
     );
   });
 
+  const getStation = station.map((place) => {
+    return (
+      <li key={place}>
+        <Link to={`/destinationDetail/${place}`}>
+          <img src={busStation} alt="Bus" />
+          {place}
+        </Link>
+      </li>
+    );
+  });
+
+  const dest = Object.values(group).map((station) => {
+    return <p key={station.id}>{station.series}</p>;
+  });
+
+  console.log(dest);
+
   return (
     <DestinationDiv>
       <div className="destination-header">
         <img src={bus} alt="Bus" />
         <h2>Where are you going?</h2>
       </div>
-      <ul className="station_lists">{stations}</ul>
+      <ul className="station_lists">{getStation}</ul>
     </DestinationDiv>
   );
 }
@@ -100,11 +119,13 @@ function Destination({ destinations }) {
 function mapStateToProps(state) {
   return {
     destinations: state.destination,
+    station: state.stations,
   };
 }
 
 const mapDispatchToProps = {
   destination,
+  stations,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Destination);

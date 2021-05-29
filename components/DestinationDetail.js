@@ -2,6 +2,22 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { format } from "date-fns";
+
+const Header = styled.div`
+  h2 {
+    font-size: 24px;
+    line-height: 26px;
+    padding-block-start: 32px;
+  }
+
+  p {
+    font-size: 24px;
+    line-height: 26px;
+    margin-block-start: -10px;
+    color: #e53170;
+  }
+`;
 
 const StationDiv = styled.div`
   .about-trip {
@@ -40,7 +56,7 @@ const StationDiv = styled.div`
   }
 
   span {
-      color: #E53170;
+    color: #e53170;
   }
 `;
 
@@ -48,39 +64,64 @@ import { destination } from "../actions/index";
 
 function DestinationDetail({ destinations, weekdays }) {
   const { destinationId } = useParams();
+  console.log(destinationId);
 
   const stationDetails =
     destinations !== [] &&
-    destinations.find((station) => station.id == destinationId);
+    destinations.filter((station) => station.destination == destinationId);
+  console.log(stationDetails);
 
-  let currrentDate = new Date(stationDetails?.departureTime);
-  const month = currrentDate.getMonth() + 1;
-  const day = currrentDate.getDate();
-  const year = currrentDate.getFullYear();
-  const time = currrentDate.getUTCHours();
+  const group = {};
 
-  const weekDay = weekdays[currrentDate.getDay()];
+  stationDetails.forEach(({ destination, ...rest }) => {
+    group[destination] = group[destination] || { destination, series: [] };
+    group[destination].series.push(rest);
+  });
 
-  const date = day + " / " + month + " / " + year;
+  console.log(Object.values(group));
+
+  const details = stationDetails.map((detail) => {
+    let currrentDate = new Date(detail.departureTime);
+    const month = currrentDate.getMonth() + 1;
+    const day = currrentDate.getDate();
+    const year = currrentDate.getFullYear();
+    const time = currrentDate.getUTCHours();
+
+    const weekDay = weekdays[currrentDate.getDay()];
+
+    const date = day + " / " + month + " / " + year;
+    return (
+      <StationDiv key={detail.id}>
+        <div className="about-trip">
+          <div className="trip-departure">
+            <p>{weekDay}</p>
+            {/* <p>{time}:00</p> */}
+            <span>{format(new Date(detail.departureTime), "hh")}</span>:
+            <span>{format(new Date(detail.departureTime), "mm")}</span>
+          </div>
+          <div className="seats-left">
+            <p>{date}</p>
+            {/* <span>{format(new Date(detail.departureTime), 'dd')}</span>/
+            <span>{format(new Date(detail.departureTime), 'MM')}</span>/
+            <span>{format(new Date(detail.departureTime), 'yyyy')}</span>/ */}
+            <p>
+              <span>{detail.breaks}</span> seats left
+            </p>
+          </div>
+          <Link to={`/trip/${detail.id}`}>Book a seat</Link>
+        </div>
+      </StationDiv>
+    );
+  });
 
   return (
-    <StationDiv>
-      <div className="trip-header">
+    <>
+      <Header>
         <h2>Next trips to:</h2>
-        <p>{stationDetails?.destination}</p>
-      </div>
-      <div className="about-trip">
-        <div className="trip-departure">
-          <p>{weekDay}</p>
-          <p>{time}:00</p>
-        </div>
-        <div className="seats-left">
-          <p>{date}</p>
-          <p><span>{stationDetails?.breaks}</span> seats left</p>
-        </div>
-        <Link to={`/${stationDetails?.driverContact}`}>Book a seat</Link>
-      </div>
-    </StationDiv>
+        <p>{destinationId}</p>
+      </Header>
+      {details}
+    </>
   );
 }
 
